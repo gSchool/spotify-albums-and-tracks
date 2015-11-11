@@ -47,8 +47,12 @@ Your task is to complete the function `displayAlbumsAndTracks`. Right now, when 
 
 This may seem simple, but it won't be. You will be using AJAX heavily; you will be parsing through some serious documentation; you will have to handle race conditions.  
 
+__Bonus__ 
+
+Get the tracks 'popularity' metric and show it side by side with the track name.
+
 ### Heres a Tip
-You'll need to use these two endpoints, but you'll also need to use more:
+You'll need to use these two endpoints, but you may also need to use more:
 
 [https://developer.spotify.com/web-api/console/get-album/](https://developer.spotify.com/web-api/console/get-album/)
 [https://developer.spotify.com/web-api/console/get-artist-albums/](https://developer.spotify.com/web-api/console/get-artist-albums/)
