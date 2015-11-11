@@ -58,64 +58,30 @@ function bootstrapSpotifySearch(){
 
 /* COMPLETE THIS FUNCTION! */
 function displayAlbumsAndTracks(event) {
-  var simplifiedData = {};
 
   // Get all the albums
   getAllAlbums($(event.target).attr('data-spotify-id'))
   
   // Then fetch the data for the individual albums
-  .then(function(allAlbumData) {
-    var albumAndTrackPromises = [];
-
-    // For each album, we need to fetch the release date
-    // as well as the tracks
-    for(var i = 0; i < allAlbumData.items.length; i++) {
-      
-      // Two bits of critical information
-      var albumId = allAlbumData.items[i].id;
-      var albumName = allAlbumData.items[i].name;
-
-      // Setup the inner storage object for this album
-      simplifiedData[allAlbumData.items[i].name] = {};
-
-      // Handle the album info
-      var albumPromise = getAlbumInfo(albumId);
-      albumPromise.then(function(albumData) {
-        simplifiedData[albumData.name]['releaseDate'] = albumData.release_date;
-      });
-
-      // Handle the tracks
-      var trackPromise = getAllTracks(albumId);
-
-      //WIZARDRY
-      // JK, this trick allows us to not use the closed
-      // over value of albumName. It's trippy though eh?
-      var trackCallback = function(albumName) {
-        return function(tracksData) {
-          // Map the tracks to be just the track names
-          trackNames = tracksData.items.map(function(track) {
-            return track.name;
-          });
-
-          // store the list of tracks
-          simplifiedData[albumName]['tracks'] = trackNames;
-          return trackNames;
-        };
-      };
-
-      // trackCallback gets the function RETURNED from 
-      // the function above.
-      trackPromise.then(trackCallback(albumName));
-      albumAndTrackPromises.push(albumPromise);
-      albumAndTrackPromises.push(trackPromise);
-    }
-
-    return $.when.apply($, albumAndTrackPromises);
-  })
+  .then(processAllAlbums)
   // when all the albums have data
   // We'll already have the tracks
   .done(function() {
+
+    var simplifiedData = {};
+    for(var i = 0; i < arguments.length; i ++) {
+      var data = arguments[i][0];
+      simplifiedData[data.name] = {};
+      simplifiedData[data.name].releaseDate = data.release_date;
+      simplifiedData[data.name].tracks = data.tracks.items.map(function(track){
+        return track.name;
+      });
+    }
+
+    console.log(simplifiedData);
+
     var appendToMe = $('#albums-and-tracks');
+    appendToMe.html('');
     
     for(albumName in simplifiedData) {
       var albumDiv = appendToMe.append('<div>');
@@ -146,6 +112,26 @@ function getAllAlbums(artistId) {
   return allAlbumsPromise;
 }
 
+function processAllAlbums(allAlbumData) {
+  var simplifiedData = {};  
+  var albumPromises = [];
+
+  // For each album, we need to fetch the release date
+  // as well as the tracks
+  for(var i = 0; i < allAlbumData.items.length; i++) {
+    
+    // Two bits of critical information
+    var albumId = allAlbumData.items[i].id;
+    var albumName = allAlbumData.items[i].name;
+
+    // Handle the album info
+    var albumPromise = getAlbumInfo(albumId);
+    albumPromises.push(albumPromise);
+  }
+
+  return $.when.apply($, albumPromises);
+}
+
 function getAlbumInfo(albumId) {
   var searchUrl = 'https://api.spotify.com/v1/albums/' + albumId;
   var albumPromise = $.ajax({
@@ -156,15 +142,3 @@ function getAlbumInfo(albumId) {
 
   return albumPromise;
 }
-
-function getAllTracks(albumId) {
-  var searchUrl = 'https://api.spotify.com/v1/albums/' + albumId + '/tracks';
-  var allTrackssPromise = $.ajax({
-          type: "GET",
-          dataType: 'json',
-          url: searchUrl
-    });
-
-  return allTrackssPromise;
-}
-
