@@ -67,39 +67,41 @@ function displayAlbumsAndTracks(event) {
   
   // Then fetch the data for the individual albums
   .then(function(allAlbumData) {
-    console.log(allAlbumData);
-    var albumPromises = [];
+    var albumAndTrackPromises = [];
 
+    // For each album, we need to fetch the release date
+    // as well as the tracks
     for(var i = 0; i < allAlbumData.items.length; i++) {
+      
+      // Two bits of critical information
       var albumId = allAlbumData.items[i].id;
+      var albumName = allAlbumData.items[i].name;
+
+      // Setup the inner storage object for this album
       simplifiedData[allAlbumData.items[i].name] = {};
 
+      // Handle the album info
       var albumPromise = getAlbumInfo(albumId);
       albumPromise.then(function(albumData) {
-        console.log(albumData);
-
-        simplifiedData[albumData.name]['releaseDate'] = albumData.release_date;
-        simplifiedData[albumData.name]['tracks'] = []
-
-        var trackPromise = getAllTracks(albumId);
-
-        trackPromise.then(function(tracksData) {
-          console.log(tracksData);
-          trackNames = tracksData.items.map(function(track) {
-            return track.name;
-          });
-          simplifiedData[albumData.name]['tracks'] = trackNames;
-          return trackNames;
-        });
-
-        return trackPromise;
+        simplifiedData[albumName]['releaseDate'] = albumData.release_date;
       });
 
-      albumPromises.push(albumPromise);
+      // Handle the tracks
+      var trackPromise = getAllTracks(albumId);
+      trackPromise.then(function(tracksData) {
+
+        trackNames = tracksData.items.map(function(track) {
+          return track.name;
+        });
+        simplifiedData[albumName]['tracks'] = trackNames;
+        return trackNames;
+      });
+
+      albumAndTrackPromises.push(albumPromise);
+      albumAndTrackPromises.push(trackPromise);
     }
 
-    console.log(albumPromises);
-    return $.when.apply($, albumPromises);
+    return $.when.apply($, albumAndTrackPromises);
   })
   // when all the albums have data
   // We'll already have the tracks
