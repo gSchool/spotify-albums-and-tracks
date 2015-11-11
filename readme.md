@@ -41,7 +41,7 @@ Your task is to complete the function `displayAlbumsAndTracks`. Right now, when 
 1. Query the Spotify API for every album produced by the artist you clicked on. 
 2. For each of those albums fetch every track on the album.
 3. Display this information to the user such that:
-	* Albums appear in chronological order, by release date.
+	* Albums appear with its release date.
 	* Each album has its tracks displayed before the next album appears. 
 	* All of this information should be appended to this div: `<div id='albums-and-tracks'>`
 
