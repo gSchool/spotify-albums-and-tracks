@@ -58,8 +58,6 @@ function bootstrapSpotifySearch(){
 
 /* COMPLETE THIS FUNCTION! */
 function displayAlbumsAndTracks(event) {
-  var appendToMe = $('#albums-and-tracks');
-
   var simplifiedData = {};
 
   // Get all the albums
@@ -83,20 +81,31 @@ function displayAlbumsAndTracks(event) {
       // Handle the album info
       var albumPromise = getAlbumInfo(albumId);
       albumPromise.then(function(albumData) {
-        simplifiedData[albumName]['releaseDate'] = albumData.release_date;
+        simplifiedData[albumData.name]['releaseDate'] = albumData.release_date;
       });
 
       // Handle the tracks
       var trackPromise = getAllTracks(albumId);
-      trackPromise.then(function(tracksData) {
 
-        trackNames = tracksData.items.map(function(track) {
-          return track.name;
-        });
-        simplifiedData[albumName]['tracks'] = trackNames;
-        return trackNames;
-      });
+      //WIZARDRY
+      // JK, this trick allows us to not use the closed
+      // over value of albumName. It's trippy though eh?
+      var trackCallback = function(albumName) {
+        return function(tracksData) {
+          // Map the tracks to be just the track names
+          trackNames = tracksData.items.map(function(track) {
+            return track.name;
+          });
 
+          // store the list of tracks
+          simplifiedData[albumName]['tracks'] = trackNames;
+          return trackNames;
+        };
+      };
+
+      // trackCallback gets the function RETURNED from 
+      // the function above.
+      trackPromise.then(trackCallback(albumName));
       albumAndTrackPromises.push(albumPromise);
       albumAndTrackPromises.push(trackPromise);
     }
@@ -106,7 +115,20 @@ function displayAlbumsAndTracks(event) {
   // when all the albums have data
   // We'll already have the tracks
   .done(function() {
-    console.log(simplifiedData);
+    var appendToMe = $('#albums-and-tracks');
+    
+    for(albumName in simplifiedData) {
+      var albumDiv = appendToMe.append('<div>');
+      
+      albumDiv.append('<h2>' + albumName + '</h2>')
+        .append('<p>' + simplifiedData[albumName].releaseDate + '</p>')
+        .append('<ul>');
+
+        for(var i = 0; i < simplifiedData[albumName].tracks.length; i++) {
+          var trackName = simplifiedData[albumName].tracks[i];
+          albumDiv.append('<li>' + trackName + '</li>');
+        }
+    }
   });
 }
 
