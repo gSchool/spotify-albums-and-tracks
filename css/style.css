@@ -16,3 +16,10 @@ h1, h2, h3{
 	cursor: pointer;
 	text-decoration: underline;
 }
+
+img {
+    margin-right: 15px;
+}
+div#albums-and-tracks li {
+    margin-top: 55px;
+}
