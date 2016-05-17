@@ -1,15 +1,9 @@
-// Self envoking function! once the document is ready, bootstrap our application.
-// We do this to make sure that all the HTML is rendered before we do things
-// like attach event listeners and any dom manipulation.
 (function(){
   $(document).ready(function(){
     bootstrapSpotifySearch();
   })
 })();
 
-/**
-This function bootstraps the spotify request functionality.
-*/
 function bootstrapSpotifySearch(){
 
   var userInput, searchUrl, results;
@@ -20,24 +14,17 @@ function bootstrapSpotifySearch(){
     spotifyQueryString = $('#spotify-q').val();
     searchUrl = "https://api.spotify.com/v1/search?type=artist&q=" + spotifyQueryString;
 
-    // Generate the request object
     spotifyQueryRequest = $.ajax({
       type: "GET",
       dataType: 'json',
       url: searchUrl
     });
 
-    // Attach the callback for success
-    // (We could have used the success callback directly)
     spotifyQueryRequest.done(function (data) {
       var artists = data.artists;
 
-      // Clear the output area
       outputArea.html('');
 
-      // The spotify API sends back an arrat 'items'
-      // Which contains the first 20 matching elements.
-      // In our case they are artists.
       artists.items.forEach(function(artist){
         var artistLi = $("<li>" + artist.name + " - " + artist.id + "</li>")
         artistLi.attr('data-spotify-name', artist.name);
@@ -47,8 +34,6 @@ function bootstrapSpotifySearch(){
       })
     });
 
-    // Attach the callback for failure
-    // (Again, we could have used the error callback direcetly)
     spotifyQueryRequest.fail(function (error) {
       console.log("Something Failed During Spotify Q Request:")
       console.log(error);
@@ -56,14 +41,11 @@ function bootstrapSpotifySearch(){
   });
 }
 
-/* COMPLETE THIS FUNCTION! */
 function displayAlbumsAndTracks(event) {
   var appendToMe = $('#albums-and-tracks');
   appendToMe.empty();
 
-  // These two lines can be deleted. They're mostly for show.
-  //console.log("you clicked on:");
-  var artist = $(event.target).attr('data-spotify-name');//.attr('data-spotify-id'));
+  var artist = $(event.target).attr('data-spotify-name');
   var searchTerm = 'https://api.spotify.com/v1/search?q=album%3A*+artist%3A' + artist +'&type=album';
 
   $.ajax({
@@ -71,8 +53,6 @@ function displayAlbumsAndTracks(event) {
     dataType: 'json',
     url: searchTerm
   }).done(function(information) {
-
-    //console.log(information.albums.items);
 
     var album = information.albums.items;
     album.forEach(function (info) {
