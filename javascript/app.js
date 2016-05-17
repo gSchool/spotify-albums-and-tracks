@@ -59,6 +59,7 @@ function bootstrapSpotifySearch(){
 /* COMPLETE THIS FUNCTION! */
 function displayAlbumsAndTracks(event) {
   var appendToMe = $('#albums-and-tracks');
+  appendToMe.empty();
 
   // These two lines can be deleted. They're mostly for show.
   //console.log("you clicked on:");
