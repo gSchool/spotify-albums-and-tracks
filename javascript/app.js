@@ -66,39 +66,32 @@ function displayAlbumsAndTracks(event) {
   var artist = $(event.target).attr('data-spotify-name');//.attr('data-spotify-id'));
   var searchTerm = 'https://api.spotify.com/v1/search?q=album%3A*+artist%3A' + artist +'&type=album';
 
-  var queryTermRequest = $.ajax({
+  $.ajax({
     type: 'GET',
     dataType: 'json',
     url: searchTerm
-  });
-
-  queryTermRequest.done(function(information) {
+  }).done(function(information) {
 
     //console.log(information.albums.items);
 
     var album = information.albums.items;
     album.forEach(function (info) {
 
-      var albumName = document.createElement('li');
+      var albumName = document.createElement('p');
       albumName.innerHTML = info.name;
       albumName.id = info.name;
       appendToMe.append(albumName);
 
-      var moreQuert = $.ajax({
+      $.ajax({
         type: 'GET',
         dataType: 'json',
         url: info.href
-      });
-
-      moreQuert.done(function(aInfo) {
-
-        //console.log(aInfo.tracks.items);
+      }).done(function(aInfo) {
 
         var parentList = document.getElementById(info.name);
-
         var subList = document.createElement('ul');
-
         var custom = aInfo.tracks.items;
+
         parentList.innerHTML += ' Released On:  ' + aInfo.release_date + ', Popularity of ' + aInfo.popularity;
 
         custom.forEach(function(func) {
@@ -114,7 +107,3 @@ function displayAlbumsAndTracks(event) {
     });
   });
 }
-
-/* YOU MAY WANT TO CREATE HELPER FUNCTIONS OF YOUR OWN */
-/* THEN CALL THEM OR REFERENCE THEM FROM displayAlbumsAndTracks */
-/* THATS PERFECTLY FINE, CREATE AS MANY AS YOU'D LIKE */
