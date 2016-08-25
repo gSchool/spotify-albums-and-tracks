@@ -1,6 +1,6 @@
 body{
 	margin:40px auto;
-	max-width:650px;
+	width:100%;
 	line-height:1.6;
 	font-size:18px;
 	color:#444;
@@ -15,4 +15,11 @@ h1, h2, h3{
 	color: #006fff;
 	cursor: pointer;
 	text-decoration: underline;
+}
+
+#app {
+	border: 1px solid black;
+	width: 800px;
+	margin: 0 auto;
+	padding: 20px;
 }

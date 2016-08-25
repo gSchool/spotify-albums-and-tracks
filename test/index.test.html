@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>These are examples of API's in action</title>
+    <link rel="stylesheet" href="../css/style.css" media="screen" title="no title" charset="utf-8">
+
+    <!-- external dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js" charset="utf-8"></script>
+
+    <!-- test  -->
+    <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+
+  </head>
+  <body>
+
+  <div id="mocha"></div>
+
+    <div id="app">
+      <h1>Your Spotify App:</h1>
+      <h2> Music Is Fun </h2>
+        <div>
+          <h2>Spotify Artist Search</h2>
+          <div>
+            <label for="spotify-q"></label>
+            <input type="text" name="q" value="" id="spotify-q">
+            <input type="button" name="name" value="Search" id="spotify-q-button">
+            <h3>Spotify Search Results:</h3>
+            <div id="q-results" class="results"></div>
+          </div>
+          <hr>
+        </div>
+        <div id='albums-and-tracks'></div>
+    </div>
+
+  </body>
+
+  <!-- test -->
+  <script src="./vendor/chai.js" charset="utf-8"></script>
+  <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+  <script src="../javascript/app.js" charset="utf-8"></script>
+  <script src="./app.test.js" charset="utf-8"></script>
+</html>
