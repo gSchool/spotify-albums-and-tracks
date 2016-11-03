@@ -14,8 +14,17 @@ If you prefer to use Postman, you can! One of these tools will be useful. The ni
 
 Fork then clone this repository! Then, from the repo directory run:
 
+### Using Python
+
 ```
 python -m SimpleHTTPServer
+```
+
+### Using Javascript
+
+```
+npm install -g http-server
+http-server -p 8000
 ```
 
 Now navigate chrome to http://localhost:8000
