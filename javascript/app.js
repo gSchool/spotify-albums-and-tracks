@@ -58,6 +58,7 @@ function bootstrapSpotifySearch(){
 /* COMPLETE THIS FUNCTION! */
 function displayAlbumsAndTracks(event) {
   var appendToMe = $('#albums-and-tracks');
+  appendToMe.empty();
   var currentId = $(event.target).attr('data-spotify-id');
   var albumByArtistUrl = `https://api.spotify.com/v1/artists/${currentId}/albums`;
 
