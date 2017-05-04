@@ -1,10 +1,10 @@
 # Spotify API Assignment
 
-Spotify has a wondeful public API. Lets explore API usage using music because music is awesome. Your task will be to explore some of the endpoints that Spotify offers us. You'll want the documentation:
+Spotify has a wonderful public API. Let's explore API usage using music because music is awesome. Your task will be to explore some of the endpoints that Spotify offers us. You'll want the documentation:
 
 [https://developer.spotify.com/web-api/](https://developer.spotify.com/web-api/)
 
-Outside of the documentation, which is expansive, spotify offers an 'api console' which will create requests on your behalf. It's a lot like Postman, check it out:
+Outside of the documentation, which is expansive, Spotify offers an 'api console' which will create requests on your behalf. It's a lot like [Postman](https://www.getpostman.com/), check it out:
 
 [https://developer.spotify.com/web-api/console/](https://developer.spotify.com/web-api/console/)
 
