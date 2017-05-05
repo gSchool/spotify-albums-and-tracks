@@ -60,47 +60,71 @@ function bootstrapSpotifySearch(){
 function displayAlbumsAndTracks(event) {
   var appendToMe = $('#albums-and-tracks');
 
-  // These two lines can be deleted. They're mostly for show.
-  console.log("you clicked on:");
-  console.log($(event.target).attr('data-spotify-id'));//.attr('data-spotify-id'));
-
-  //artist clicked
+  //clicked item
   var clicked = $(event.target);
+  var div = document.createElement('div');
+  var count = 0;
 
-
+  //album reuquest
   $.getJSON('https://api.spotify.com/v1/artists/' + $(event.target).attr('data-spotify-id') + '/albums').then(function(response) {
 
     var albums = response.items;
-    console.log(response);
-    console.log(albums);
-    var ul = document.createElement('ul');
-    clicked.append(ul);
-
+    var albumNames = [];
+    //adds list of album titles to clicked artist
     for (var i = 0; i < albums.length; i++) {
-      var listItem = document.createElement('li');
-      listItem.innerText = albums[i].name;
-      listItem.style.textDecoration = 'none';
-      ul.append(listItem);
+      var list = document.createElement('ul');
+      albumNames.push(albums[i].name);
+      //div.appendChild(list);
+
+      getTracks(albums[i]);
+
     }
 
-    // //track request
-    // albums.forEach(function(album) {
-    //   $.getJSON('https://api.spotify.com/v1/albums/' + album.id + '/tracks').then(function(response) {
-    //
-    //     var tracks = response.items;
-    //     //console.log(tracks);
-    //     for (var i = 0; i < tracks.length; i++) {
-    //       console.log(tracks[i].name);
-    //     }
-    //
-    //
-    //
-    //   });
-    // });
+    //track request
+    function getTracks(album) {
+      $.getJSON('https://api.spotify.com/v1/albums/' + album.id + '/tracks').then(function(response) {
+        var tracks = response.items;
+        var songList = document.createElement('ul');
+        var albumTitle = document.createElement('h3');
 
+        for (var i = 0; i < tracks.length; i++) {
+          var songName = document.createElement('li');
+          songName.innerText = tracks[i].name;
+          //songList.innerHTML = albumNames[i];
+          songList.appendChild(songName);
+
+        }
+
+        albumTitle.innerHTML = albumNames[count];
+        div.appendChild(albumTitle);
+        div.appendChild(songList);
+        count++;
+
+      });
+
+    }
   });
+  appendToMe.append(div);
 }
 
+
+//
+// albums.forEach(function(album) {
+//   $.getJSON('https://api.spotify.com/v1/albums/' + album.id + '/tracks').then(function(response) {
+//
+//     var tracks = response.items;
+//     console.log(tracks);
+//
+//     for (var i = 0; i < tracks.length; i++) {
+//       var songName = document.createElement('li');
+//       songName.innerText = tracks[i].name;
+//       list.append(songName);
+//
+//     }
+//
+//   });
+// );
+// }
 /* YOU MAY WANT TO CREATE HELPER FUNCTIONS OF YOUR OWN */
 /* THEN CALL THEM OR REFERENCE THEM FROM displayAlbumsAndTracks */
 /* THATS PERFECTLY FINE, CREATE AS MANY AS YOU'D LIKE */
