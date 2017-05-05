@@ -39,7 +39,7 @@ function bootstrapSpotifySearch(){
         // Which contains the first 20 matching elements.
         // In our case they are artists.
         artists.items.forEach(function(artist){
-          var artistLi = $("<li>" + artist.name + " - " + artist.id + "</li>")
+          var artistLi = $("<li>" + artist.name + "</li>")
           artistLi.attr('data-spotify-id', artist.id);
           outputArea.append(artistLi);
 
@@ -69,6 +69,7 @@ function displayAlbumsAndTracks(event) {
 
 function createAlbumInfoById(albumId) {
 	$.get('https://api.spotify.com/v1/albums/' + albumId).then(function(albumData) {
+		console.log(albumData.name);
 		let albumInfoContainer = document.createElement("div");
 		albumInfoContainer.className = "albumContainer";
 		let albumTitle = document.createElement("h3");
@@ -87,6 +88,9 @@ function createAlbumInfoById(albumId) {
 		rightDiv.appendChild(albumYear);
 		rightDiv.appendChild(tracksList);
 		albumInfoContainer.appendChild(rightDiv);
+		// let thisAlbumId = document.createElement('p');
+		// thisAlbumId.textContent = albumId;
+		// albumInfoContainer.appendChild(thisAlbumId);
 		if(isDuplicate(albumData) === false) {
 			$('#albums-and-tracks').append(albumInfoContainer);
 		}
@@ -103,10 +107,10 @@ function createTracksList(album) {
 	return tracksList;
 }
 function createImageFrame(album) {
-	let albumImage = document.createElement("iframe");
+	let albumImage = document.createElement("img");
 	albumImage.setAttribute('src', album.images[0].url);
-	albumImage.setAttribute('width', album.images[0].width);
-	albumImage.setAttribute('height', album.images[0].height);
+	albumImage.setAttribute('width', '70%' );
+	albumImage.setAttribute('height', 'auto' );
 	return albumImage;
 }
 function isDuplicate(album) {

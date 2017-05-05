@@ -12,6 +12,12 @@ body{
 h1, h2, h3{
 	line-height:1.2
 }
+summary {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+}
+
 
 #q-results li {
 	color: #006fff;
@@ -24,6 +30,7 @@ h1, h2, h3{
 	width: 800px;
 	margin: 0 auto;
 	padding: 20px;
+	background-color: red;
 }
 .albumContainer {
 	background-color: grey;
@@ -53,7 +60,7 @@ h1, h2, h3{
 	font-style: italic;
 
 }
-iframe {
+img {
 	border: 0;
 	box-shadow: 1px 1px 3px #3d3d3d;
 }

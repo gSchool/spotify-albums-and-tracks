@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js" charset="utf-8"></script>
     <script src="javascript/app.js" charset="utf-8"></script>
     <link rel="stylesheet" href="css/style.css" media="screen" title="no title" charset="utf-8">
-	
+
   </head>
   <body>
   	<h1> Music Is Fun </h1>
@@ -17,8 +17,13 @@
           <label for="spotify-q"></label>
           <input type="text" name="q" value="" id="spotify-q">
           <input type="button" name="name" value="Search" id="spotify-q-button">
-          <h3>Spotify Search Results:</h3>
-          <div id="q-results" class="results"></div>
+
+		  <details>
+			  <summary>
+				  <h3 id="searchResults">Spotify Search Results:</h3>
+			  </summary>
+	          <div id="q-results" class="results"></div>
+		  </details>
         </div>
         <hr>
       </div>
