@@ -80,7 +80,7 @@ function createAlbumInfoById(albumId) {
 		leftDiv.append(albumImage);
 		albumInfoContainer.append(leftDiv);
 		let albumYear = document.createElement('p');
-		albumYear.textContent = albumData.release_date;
+		albumYear.textContent = albumData.release_date.split("-").reverse().join("-");
 		let tracksList = createTracksList(albumData);
 		let rightDiv = document.createElement("div");
 		rightDiv.className = "albumContainerRight";
