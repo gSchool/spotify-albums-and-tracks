@@ -1,6 +1,6 @@
 // Self envoking function! once the document is ready, bootstrap our application.
-// We do this to make sure that all the HTML is rendered before we do things 
-// like attach event listeners and any dom manipulation.  
+// We do this to make sure that all the HTML is rendered before we do things
+// like attach event listeners and any dom manipulation.
 (function(){
   $(document).ready(function(){
     bootstrapSpotifySearch();
@@ -27,7 +27,7 @@ function bootstrapSpotifySearch(){
           url: searchUrl
       });
 
-      // Attach the callback for success 
+      // Attach the callback for success
       // (We could have used the success callback directly)
       spotifyQueryRequest.done(function (data) {
         var artists = data.artists;
@@ -35,7 +35,7 @@ function bootstrapSpotifySearch(){
         // Clear the output area
         outputArea.html('');
 
-        // The spotify API sends back an arrat 'items' 
+        // The spotify API sends back an arrat 'items'
         // Which contains the first 20 matching elements.
         // In our case they are artists.
         artists.items.forEach(function(artist){
@@ -47,7 +47,7 @@ function bootstrapSpotifySearch(){
         })
       });
 
-      // Attach the callback for failure 
+      // Attach the callback for failure
       // (Again, we could have used the error callback direcetly)
       spotifyQueryRequest.fail(function (error) {
         console.log("Something Failed During Spotify Q Request:")
@@ -60,11 +60,71 @@ function bootstrapSpotifySearch(){
 function displayAlbumsAndTracks(event) {
   var appendToMe = $('#albums-and-tracks');
 
-  // These two lines can be deleted. They're mostly for show. 
-  console.log("you clicked on:");
-  console.log($(event.target).attr('data-spotify-id'));//.attr('data-spotify-id'));
+  //clicked item
+  var clicked = $(event.target);
+  var div = document.createElement('div');
+  var count = 0;
+
+  //album reuquest
+  $.getJSON('https://api.spotify.com/v1/artists/' + $(event.target).attr('data-spotify-id') + '/albums').then(function(response) {
+
+    var albums = response.items;
+    var albumNames = [];
+    //adds list of album titles to clicked artist
+    for (var i = 0; i < albums.length; i++) {
+      var list = document.createElement('ul');
+      albumNames.push(albums[i].name);
+      //div.appendChild(list);
+
+      getTracks(albums[i]);
+
+    }
+
+    //track request
+    function getTracks(album) {
+      $.getJSON('https://api.spotify.com/v1/albums/' + album.id + '/tracks').then(function(response) {
+        var tracks = response.items;
+        var songList = document.createElement('ul');
+        var albumTitle = document.createElement('h3');
+
+        for (var i = 0; i < tracks.length; i++) {
+          var songName = document.createElement('li');
+          songName.innerText = tracks[i].name;
+          //songList.innerHTML = albumNames[i];
+          songList.appendChild(songName);
+
+        }
+
+        albumTitle.innerHTML = albumNames[count];
+        div.appendChild(albumTitle);
+        div.appendChild(songList);
+        count++;
+
+      });
+
+    }
+  });
+  appendToMe.append(div);
 }
 
+
+//
+// albums.forEach(function(album) {
+//   $.getJSON('https://api.spotify.com/v1/albums/' + album.id + '/tracks').then(function(response) {
+//
+//     var tracks = response.items;
+//     console.log(tracks);
+//
+//     for (var i = 0; i < tracks.length; i++) {
+//       var songName = document.createElement('li');
+//       songName.innerText = tracks[i].name;
+//       list.append(songName);
+//
+//     }
+//
+//   });
+// );
+// }
 /* YOU MAY WANT TO CREATE HELPER FUNCTIONS OF YOUR OWN */
 /* THEN CALL THEM OR REFERENCE THEM FROM displayAlbumsAndTracks */
 /* THATS PERFECTLY FINE, CREATE AS MANY AS YOU'D LIKE */
